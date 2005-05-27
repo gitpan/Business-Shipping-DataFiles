@@ -3,7 +3,7 @@ use warnings;
 use ExtUtils::MakeMaker;
 
 my %my_globals = (
-	SUPPORT_FILES_DIR	=> '/var/perl/Business-Shipping'
+	SUPPORT_FILES_DIR	=> '/usr/local/B_Shipping/data'
 );
 
 WriteMakefile(
@@ -54,14 +54,14 @@ sub extra_WriteMakefile_options {
     # TODO: Try to determine the directory by using 
     # Business::Shipping::Config::support_files()
     
-    
-    eval {
-        use Business::Shipping;
-        my $support_files_installed = Business::Shipping::Config::support_files();
-        if ( $support_files_installed ) {
-            $my_globals{ SUPPORT_FILES_DIR } = $support_files_installed;
-        }
-    };
+    # TODO: This probaby causes CPAN to try to install Business::Shipping, so don't do it for now.
+    # eval {
+    #    use Business::Shipping;
+    #    my $support_files_installed = Business::Shipping::Config::support_files();
+    #    if ( $support_files_installed ) {
+    #        $my_globals{ SUPPORT_FILES_DIR } = $support_files_installed;
+    #    }
+    #};
     
     # ignore errors.  If Business::Shipping isn't installed, don't make
     # a big deal about it.
@@ -70,16 +70,9 @@ sub extra_WriteMakefile_options {
     
     
     my $question = qq(
-             ---  $module Support files directory  ---
+             ---  $module data directory  ---
   
-$module module comes with various support files for configuration, database, 
-etc.  Please input the path you would like to copy these files to.  You can 
-modify the path later by changing the Config.pm file.
-
-On many systems, this directory will only be accessible by the user who 
-installed perl, typically root.
-
-$module Support files directory:);
+$module data directory:);
 
         $my_globals{ SUPPORT_FILES_DIR } = prompt( 
             $question, 
